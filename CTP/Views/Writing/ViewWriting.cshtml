@@ -1,0 +1,25 @@
+﻿@model CTP.Models.Entities.Writing
+@{ Layout = "/Views/Shared/_LoggedInLayout.cshtml"; }
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+    <div class="mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col writing-content mdl-card">
+        @Html.Partial("Partials/Breadcrumbs_Writing", Model)
+        <div>
+            <small><strong>created: </strong>@Model.DateCreated</small>
+            <small><strong>modified: </strong>@Model.LastModified</small>
+            <h1>@Model.Title</h1>
+        </div>
+        <div>
+            @Html.Raw(Model.Content)
+        </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" id="menu-@(Model.Id)">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-@(Model.Id)">
+                <li class="mdl-menu__item"><a href="/writing/@Model.Project.UrlName/@Model.UrlName/edit">Edit</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

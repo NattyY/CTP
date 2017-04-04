@@ -1,0 +1,9 @@
+﻿@using CTP.Models.Maps
+@model CTP.Models.Entities.Writing
+
+<div class="mdl-color-text--grey-500">
+    <a href="/projects" title="Project Hub">Project Hub</a> &gt; 
+    <a href="@ProjectMaps.GetUrl(Model.Project)" title="@Model.Project.Title">@Model.Project.Title</a> &gt; 
+    <a href="/writing/@Model.Project.UrlName" title="My Writing">My Writing</a> &gt;
+    <span>@Model.Title</span>
+</div>

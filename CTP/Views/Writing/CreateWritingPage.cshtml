@@ -1,0 +1,12 @@
+﻿@model CTP.Models.ViewModels.CreateWritingPageViewModel
+@{ Layout = "/Views/Shared/_LoggedInLayout.cshtml"; }
+
+
+<div class="mdl-grid">
+    @{ Html.RenderAction("CreateWritingForm", "Writing", new { projectId = Model.ProjectId }); }
+
+    @if (Model.ProjectId > 0)
+    {
+        Html.RenderAction("ProjectDrawer", "Writing", new { projectId = Model.ProjectId });
+    }
+</div>

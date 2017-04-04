@@ -1,0 +1,103 @@
+﻿@using CTP.Models.ViewModels;
+@model ProjectDrawerViewModel
+
+<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet pd-show">
+    <h2 class="mdl-dialog__title">Project Drawer</h2>
+    <div class="mdl-dialog__content">
+        <ul class="mdl-list project-drawer">
+            @foreach (var category in Model.Project.Categories)
+            {
+                <li class="mdl-list__item">
+                    <a class="mdl-list__item-primary-content pd-folder" href="#c@(category.Id)">
+                        <i class="material-icons mdl-list__item-icon">arrow_drop_down</i>
+                        <strong>@category.Title</strong>
+                    </a>
+                    @DisplayContentItems(category.ContentItems, category.Id)
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button" onclick="toggleProjectDrawer()">Hide</button>
+    </div>
+</div>
+
+@helper DisplayContentItems(List<ContentItemPageViewModel> contentItems, long categoryId, long? parentFolderId = null)
+{
+    <ul class="mdl-list" id="c@(categoryId)@(parentFolderId.HasValue ? "p" + parentFolderId.Value : "")" style="display: none;">
+        @foreach (var contentItem in contentItems)
+        {
+            var textCi = contentItem as TextContentItemPageViewModel;
+            var imageCi = contentItem as ImageContentItemPageViewModel;
+            var videoCi = contentItem as VideoContentItemPageViewModel;
+            var folderCi = contentItem as FullFolderContentItemPageViewModel;
+
+            if (textCi != null)
+            {
+                <li class="mdl-list__item mdl-list__item--three-line">
+                    <span class="mdl-list__item-primary-content">
+                        <span>@textCi.Title</span>
+                        <span class="mdl-list__item-text-body">
+                            @textCi.Text
+                        </span>
+                    </span>
+                </li>
+            }
+            else if (imageCi != null)
+            {
+                <li class="mdl-list__item mdl-list__item--three-line pd-image">
+                    <span class="mdl-list__item-primary-content">
+                        <img class="mdl-list__item-avatar" src="@imageCi.ImageUrl" alt="@imageCi.Title" />
+                        <span>@imageCi.Title</span>
+                    </span>
+                </li>
+            }
+            else if (folderCi != null)
+            {
+                <li class="mdl-list__item">
+                    <a class="mdl-list__item-primary-content pd-folder" href="#c@(categoryId)p@(folderCi.Id)">
+                        <i class="material-icons mdl-list__item-icon">arrow_drop_down</i>
+                        <strong>@folderCi.Title</strong>
+                    </a>
+                    @DisplayContentItems(folderCi.ContentItems, categoryId, folderCi.Id)
+                </li>
+            }
+            @*else if (videoCi != null)
+                {
+                    <li class="mdl-list__item">
+                        <strong>@videoCi.Title</strong>
+                        <iframe src="@videoCi.VideoUrl" width="200" height="200"></iframe>
+                    </li>
+                }*@
+        }
+    </ul>
+}
+
+<script type="text/javascript">
+    /* Toggle hiding the project drawer */
+    function toggleProjectDrawer() {
+        var projectDrawer = document.getElementsByClassName("pd-show")[0];
+        projectDrawer.classList.toggle("hide");
+    }
+
+    /* Show and hide the folders */
+    var folders = document.getElementsByClassName("pd-folder");
+    for (var i = 0; i < folders.length; i++) {
+        folders[i].onclick = function (ev) {
+            ev.preventDefault();
+            var ul = this.nextElementSibling;
+            var i = this.childNodes[1];
+            if (ul.style.display == "block") {
+                // Hide the ul
+                ul.style.display = "none";
+                // Change icon
+                i.innerHTML = "arrow_drop_down";
+            } else {
+                // Display the ul
+                ul.style.display = "block";
+                // Change icon
+                i.innerHTML = "arrow_drop_up";
+            }
+        };
+    }
+</script>

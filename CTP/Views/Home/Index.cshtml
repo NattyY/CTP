@@ -1,0 +1,69 @@
+﻿@model CTP.Models.ViewModels.HomeViewModel
+
+@{
+    Layout = "/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Home";
+}
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    @if (Model.IsLoggedIn)
+    {
+        @Html.Partial("Partials/Header")
+    }
+    else
+    {
+        @Html.Partial("Partials/HomeHeader")
+    }
+
+    <main class="layout__content">
+        <div class="page-content">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--8-col mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h1>Creative Writing Tool</h1>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This web application is a content management system that has been designed to help you
+                        manage your creative writing projects. Login to start adding story elements such as
+                        characters, plotlines, worlds and timelines. You can write and save your
+                        stories and even publish them for feedback from our wonderful community!
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp mdl-cell--8-col-tablet">
+                    @if (Model.IsLoggedIn)
+                    {
+                        <div class="mdl-card__title">
+                            <h2>Welcome back!</h2>
+                        </div>
+
+                        <div class="mdl-card__supporting-text">
+                            <span>Welcome @Model.LoggedInUser.Username</span>
+                        </div>
+                        <div class="mdl-card__actions">
+                            <a href="/projects/" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Go to your Project Hub</a>
+                            <a href="/home/logout" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">Logout</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mdl-card__title">
+                            <h2>Login</h2>
+                        </div>
+
+                        <div class="mdl-card__supporting-text">
+                            @{Html.RenderAction("LoginForm", "Home"); }
+                        </div>
+                                }
+                </div>
+                <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2>Recently Published</h2>
+                    </div>
+                    <div>
+                        @Html.Partial("Partials/RecentUpdates", Model.PublicWriting)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

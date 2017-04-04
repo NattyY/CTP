@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>@ViewBag.Title - Natasha Young CTP</title>
+
+    @* Roboto font used by mdl *@
+    @* FONT DOESNT SEEM TO BE BEING USED BY MDL? *@
+    @*<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">*@
+
+    @* See: https://getmdl.io/customize/index.html *@
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    @* Overriding styles *@
+    <link rel="stylesheet" href="~/css/main.css" />
+
+    @* For the RTE for writing - from: https://github.com/basecamp/trix *@
+    <link rel="stylesheet" href="~/scripts/trix/trix.css" />
+    <script src="~/scripts/trix/trix.js"></script>
+
+</head>
+<body>
+
+    <div class="mdl-layout mdl-js-layout">
+        @RenderBody()
+    </div>
+
+</body>
+</html>

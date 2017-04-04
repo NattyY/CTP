@@ -1,0 +1,20 @@
+﻿@model List<CTP.Models.Entities.Writing>
+
+<ul class="mdl-list">
+    @foreach (var writing in Model)
+    {
+        <li class="mdl-list__item mdl-list__item--three-line">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">book</i>
+                <span>@writing.Title</span>
+                <span class="mdl-list__item-text-body">
+                    Last updated on @writing.LastModified.ToString("HH:mm dd MMM") by 
+                    <a href="/profile/@writing.Project.User.UrlName" title="View @writing.Project.User.Username's Profile">@writing.Project.User.Username</a>
+                </span>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+                <a class="mdl-list__item-secondary-action mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" href="@CTP.Models.Maps.WritingMaps.GetPublicUrl(writing)">Read</a>
+            </span>
+        </li>
+    }
+</ul>

@@ -1,0 +1,41 @@
+﻿@model CTP.Models.ViewModels.EditWritingFormViewModel
+@{ Layout = "/Views/Shared/_LoggedInLayout.cshtml"; }
+
+@{ ViewBag.Title = "Edit Writing"; }
+
+<div class="mdl-grid">
+    <div class="mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col writing-content mdl-card">
+        <div class="mdl-card__title">
+            @Html.Partial("Partials/Breadcrumbs_EditWriting", Model)
+        </div>
+
+        @using (Html.BeginForm("EditWriting", "Writing", FormMethod.Post, new { @class = "" }))
+        {
+            <div class="mdl-card__supporting-text">
+                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="IsPublic">
+                    @Html.CheckBoxFor(m => m.IsPublic, new { @class = "mdl-switch__input" })
+                    <span class="mdl-switch__label">Public</span>
+                </label>
+
+                <div class="mdl-textfield mdl-js-textfield title-textfield">
+                    @Html.LabelFor(m => m.Title, new { @class = "mdl-textfield__label" })
+                    @Html.TextBoxFor(m => m.Title, new { @class = "mdl-textfield__input" })
+                    @Html.ValidationMessageFor(m => m.Title)
+                </div>
+
+                @Html.HiddenFor(m => m.Content, new { @class = "" })
+                <trix-editor input="Content"></trix-editor>
+
+                @Html.HiddenFor(m => m.Id)
+            </div>
+
+            <div class="mdl-card__supporting-text">
+                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">Update</button>
+                <a href="#" class="expand-pd mdl-button mdl-button--accent" onclick="toggleProjectDrawer()">Project Drawer</a>
+            </div>
+        }
+    </div>
+
+    @{ Html.RenderAction("ProjectDrawer", "Writing", new { projectId = Model.ProjectId }); }
+
+</div>

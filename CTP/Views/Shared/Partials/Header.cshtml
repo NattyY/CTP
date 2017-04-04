@@ -1,0 +1,34 @@
+﻿@{ 
+    var usernameUrl = ViewData["usernameUrl"];
+
+}
+
+<!-- Uses a header that scrolls with the text, rather than staying locked at the top -->
+<header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">Creative Writing Tool</span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation - Hide on smaller screens -->
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link" href="/">Home</a>
+            <a class="mdl-navigation__link" href="/projects">Project Hub</a>
+            <a class="mdl-navigation__link" href="/profile/@usernameUrl">My Profile</a>
+            <a class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" href="/writing/create-new">Start writing</a>
+        </nav>
+    </div>
+</header>
+<div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Creative Writing Tool</span>
+    <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="/">Home</a>
+        <a class="mdl-navigation__link" href="/projects">Project Hub</a>
+        <a class="mdl-navigation__link" href="/profile/@usernameUrl">My Profile</a>
+        <div class="drawer-separator"></div>
+        <a class="mdl-navigation__link" href="/writing/create-new">Start writing</a>
+        <div class="drawer-separator"></div>
+        <a class="mdl-navigation__link" href="/home/logout">Logout</a>
+        <div class="drawer-separator"></div>
+    </nav>
+</div>

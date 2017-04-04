@@ -1,0 +1,8 @@
+﻿@using CTP.Models.Maps
+@model CTP.Models.ViewModels.WritingDashboardViewModel
+
+<div class="mdl-color-text--grey-500">
+    <a href="/projects" title="Project Hub">Project Hub</a> &gt; 
+    <a href="@ProjectMaps.GetUrl(Model.Project)" title="@Model.Project.Title">@Model.Project.Title</a> &gt; 
+    <span>My Writing</span>
+</div>

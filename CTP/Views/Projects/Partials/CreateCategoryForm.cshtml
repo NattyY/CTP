@@ -1,0 +1,20 @@
+﻿@model CTP.Models.ViewModels.CreateCategoryFormViewModel
+
+@using (Html.BeginForm("CreateCategory", "Projects", FormMethod.Post, new { @class = "thinner-form" }))
+{
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        @Html.LabelFor(m => m.Title, new { @class = "mdl-textfield__label" })
+        @Html.TextBoxFor(m => m.Title, new { @class = "mdl-textfield__input" })
+        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+    @*<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        @Html.LabelFor(m => m.ImageUrl, new { @class = "mdl-textfield__label" })
+        @Html.TextBoxFor(m => m.ImageUrl, new { @class = "mdl-textfield__input" })
+        @Html.ValidationMessageFor(m => m.ImageUrl, null, new { @class = "mdl-textfield__error" })
+    </div>*@
+
+    @Html.HiddenFor(m => m.ProjectId)
+
+    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Create</button>
+}

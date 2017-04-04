@@ -1,0 +1,15 @@
+﻿@using CTP.Models.Maps
+@model CTP.Models.ViewModels.FolderContentItemPageViewModel
+
+<div class="mdl-color-text--grey-500">
+    <a href="/projects" title="Project Hub">Project Hub</a> &gt; 
+    <a href="@ProjectMaps.GetUrl(Model.Category.Project)" title="@Model.Category.Project.Title">@Model.Category.Project.Title</a> &gt; 
+    <a href="@ProjectCategoryMaps.GetUrl(Model.Category)" title="@Model.Category.Title">@Model.Category.Title</a> &gt; 
+
+    @foreach (var ci in Model.Ancestors)
+    {
+        <a href="@ci.Url" title="@ci.Title">@ci.Title</a><text> &gt; </text>
+    }
+
+    <span>@Model.Title</span>
+</div>

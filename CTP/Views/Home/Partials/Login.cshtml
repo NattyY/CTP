@@ -1,0 +1,18 @@
+﻿@model CTP.Models.ViewModels.UserLoginViewModel
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form" }))
+{
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "mdl-textfield__input" })
+        @Html.LabelFor(m => m.EmailAddress, new { @class = "mdl-textfield__label" })
+        @Html.ValidationMessageFor(m => m.EmailAddress, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        @Html.PasswordFor(m => m.Password, new { @class = "mdl-textfield__input" })
+        @Html.LabelFor(m => m.Password, new { @class = "mdl-textfield__label" })
+        @Html.ValidationMessageFor(m => m.Password, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Login</button>
+}

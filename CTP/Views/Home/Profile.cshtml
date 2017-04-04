@@ -1,0 +1,65 @@
+﻿@model CTP.Models.ViewModels.ViewProfileViewModel
+
+@{ Layout = "/Views/Shared/_MainLayout.cshtml"; }
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    @if (Model.LoggedInUserId > 0)
+    {
+        @Html.Partial("Partials/Header")
+    }
+    else
+    {
+        @Html.Partial("Partials/HomeHeader")
+    }
+
+    <main class="layout__content">
+        <div class="page-content">
+
+            <div class="mdl-grid">
+
+                <div class="mdl-cell mdl-cell--12-col">
+                    <h1>My Profile</h1>
+                </div>
+
+                <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">About @Model.User.Username</h2>
+                    </div>
+                    @if (Model.User.Id == 2)
+                    {
+                    <div class="mdl-card__supporting-text">
+                        Lewis Carroll, pseudonym of Charles Lutwidge Dodgson (born Jan. 27, 1832, Daresbury, Cheshire, Eng.—died Jan. 14, 1898, Guildford, Surrey), English logician, mathematician, photographer, and novelist, especially remembered for Alice's Adventures in Wonderland (1865) and its sequel, Through the Looking-Glass (1871).
+                    </div>
+                    }
+                    else
+                    {
+                        <div class="mdl-card__supporting-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nisi tellus, molestie eu porttitor ut, ultrices quis mauris. Praesent sed gravida ligula. In hac habitasse platea dictumst. Aenean ligula eros, suscipit id enim ac, tincidunt vestibulum mauris. Nulla facilisi. Sed faucibus massa eget bibendum lobortis. Quisque at tortor id nunc semper commodo a ac neque.
+                            </div>
+                    }
+                </div>
+
+                <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Recently Public</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        @Html.Partial("Partials/RecentUpdates", Model.PublicWriting)
+                    </div>
+                </div>
+                @if (Model.User.Id != 2 && Model.User.Id != 3)
+                {
+                <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">@Model.User.Username's Goodreads</h2>
+                    </div>
+
+                    <div class="mdl-card__supporting-text">
+                        @Html.Partial("Partials/GoodreadsWidget")
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>

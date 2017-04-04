@@ -1,0 +1,58 @@
+﻿@model CTP.Models.ViewModels.CreateWritingFormViewModel
+
+<div class="mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col writing-content mdl-card">
+    @if (Model.ProjectId > 0)
+    {
+        var currentProject = Model.Projects.First(p => p.Id == Model.ProjectId);
+        <div class="mdl-card__title">
+            <div class="mdl-color-text--grey-500">
+                <a href="/projects" title="Project Hub">Project Hub</a> &gt;
+                <a href="/projects/@currentProject.UrlName">@currentProject.Title</a> &gt;
+                <a href="/writing/@currentProject.UrlName">My Writing</a> &gt;
+                <span>New</span>
+            </div>
+        </div>
+    }
+
+    @using (Html.BeginForm("CreateWriting", "Writing", FormMethod.Post, new { @class = "" }))
+    {
+        <div class="mdl-card__supporting-text">
+            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="IsPublic">
+                @Html.CheckBoxFor(m => m.IsPublic, new { @class = "mdl-switch__input" })
+                <span class="mdl-switch__label">Public</span>
+            </label>
+
+            <div class="mdl-textfield mdl-js-textfield title-textfield">
+                @Html.LabelFor(m => m.Title, new { @class = "mdl-textfield__label" })
+                @Html.TextBoxFor(m => m.Title, new { @class = "mdl-textfield__input" })
+                @Html.ValidationMessageFor(m => m.Title)
+            </div>
+
+            @Html.HiddenFor(m => m.Content, new { @class = "" })
+            <trix-editor input="Content"></trix-editor>
+
+            @if (Model.ProjectId > 0)
+            {
+                @Html.HiddenFor(m => m.ProjectId)
+            }
+            else
+            {
+                var projectsList = Model.Projects.Select(p => new SelectListItem { Text = p.Title, Value = p.Id.ToString() }).ToList();
+                projectsList.Add(new SelectListItem { Text = "Create new project", Value = "-1" });
+
+                <div class="mdl-textfield">
+                    @Html.DropDownListFor(m => m.ProjectId, projectsList, "Select the project this writing belongs to", new { @class = "mdl-textfield__input" })
+                    @Html.ValidationMessageFor(m => m.ProjectId)
+                </div>
+            }
+        </div>
+
+        <div class="mdl-card__supporting-text">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">Create</button>
+            @if (Model.ProjectId > 0)
+            {
+                <a href="#" class="expand-pd mdl-button mdl-button--accent" onclick="toggleProjectDrawer()">Project Drawer</a>
+            }
+        </div>
+                }
+</div>

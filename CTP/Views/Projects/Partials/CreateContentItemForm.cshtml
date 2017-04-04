@@ -1,0 +1,58 @@
+﻿@model CTP.Models.ViewModels.CreateContentItemFormViewModel
+
+@using (Html.BeginForm("CreateContentItem", "Projects", FormMethod.Post, new { @class = "thinner-form" }))
+{
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        @Html.LabelFor(m => m.Title, new { @class = "mdl-textfield__label" })
+        @Html.TextBoxFor(m => m.Title, new { @class = "mdl-textfield__input" })
+        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        @Html.LabelFor(m => m.ContentItemTypeId, new { @class = "mdl-textfield__label" })
+        @Html.DropDownListFor(m => m.ContentItemTypeId, Model.ContentItemTypes, new { @class = "mdl-textfield__input content-types-dropdown" })
+        @Html.ValidationMessageFor(m => m.ContentItemTypeId, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label show-if" data-showif="1">
+        @Html.LabelFor(m => m.Text, new { @class = "mdl-textfield__label" })
+        @Html.TextAreaFor(m => m.Text, new { @class = "mdl-textfield__input" })
+        @Html.ValidationMessageFor(m => m.Text, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label show-if" data-showif="2">
+        @Html.LabelFor(m => m.ImageUrl, new { @class = "mdl-textfield__label" })
+        @Html.TextBoxFor(m => m.ImageUrl, new { @class = "mdl-textfield__input" })
+        @Html.ValidationMessageFor(m => m.ImageUrl, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label show-if" data-showif="3">
+        @Html.LabelFor(m => m.VideoUrl, new { @class = "mdl-textfield__label" })
+        @Html.TextBoxFor(m => m.VideoUrl, new { @class = "mdl-textfield__input" })
+        @Html.ValidationMessageFor(m => m.VideoUrl, null, new { @class = "mdl-textfield__error" })
+    </div>
+
+        @Html.HiddenFor(m => m.CategoryId)
+        @Html.HiddenFor(m => m.ParentContentItemId)
+
+        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Create</button>
+}
+
+<script type="text/javascript">
+    var dropdown = document.getElementsByClassName("content-types-dropdown")[0];
+    var textFields = document.getElementsByClassName("show-if");
+    var onDropdownChange = function () {
+        var val = dropdown.value;
+        for (var i = 0; i < textFields.length; i++) {
+            var showif = textFields[i].getAttribute("data-showif");
+            if (showif == val) {
+                textFields[i].style.display = "block";
+            } else {
+                textFields[i].style.display = "none";
+            }
+        }
+    };
+
+    dropdown.onchange = onDropdownChange;
+    onDropdownChange();
+</script>

@@ -1,0 +1,44 @@
+﻿@model CTP.Models.ViewModels.WritingDashboardViewModel
+@{ Layout = "/Views/Shared/_LoggedInLayout.cshtml"; }
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+        @Html.Partial("Partials/Breadcrumbs_Writings", Model)
+        <h1>My Writing</h1>
+    </div>
+</div>
+
+@if (Model.Writings.Count > 0)
+{
+    foreach (var writing in Model.Writings)
+    {
+        <section class="section--center mdl-grid">
+            <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-shadow--8dp">
+                <div class="mdl-card__supporting-text">
+                    <h2>@writing.Title</h2>
+                    <div>@Html.Raw(writing.Content)</div>
+                    <small><strong>created: </strong>@writing.DateCreated</small>
+                    <small><strong>modified: </strong>@writing.LastModified</small>
+                </div>
+                <div class="mdl-card__actions">
+                    <a href="/writing/@writing.Project.UrlName/@writing.UrlName" class="mdl-button mdl-button--primary">View</a>
+                    <a href="/writing/@writing.Project.UrlName/@writing.UrlName/edit" class="mdl-button mdl-button--accent">Edit</a>
+                </div>
+            </div>
+        </section>
+    }
+}
+else
+{
+    <p>
+        You haven't got any writing yet...
+        <br />
+        Why not start something now?
+    </p>
+}
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+        <a href="/writing/create-new/@Model.Project.UrlName" title="Start new writing" class="mdl-button mdl-button--accent mdl-button--raised">Start writing</a>
+    </div>
+</div>
