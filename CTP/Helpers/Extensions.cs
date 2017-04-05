@@ -9,7 +9,7 @@ namespace CTP.Helpers
 {
     public static class Extensions
     {
-        // See: https://coderwall.com/p/vshjwq/how-to-generate-clean-url-slug-in-c
+        // Taken from: https://coderwall.com/p/vshjwq/how-to-generate-clean-url-slug-in-c
         public static string ToUrlName(this string val)
         {
             var value = val;

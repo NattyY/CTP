@@ -5,6 +5,7 @@ using System.Web;
 
 namespace CTP.Models.Entities
 {
+    // C# version of db table 'ContentItem'
     public abstract class ContentItem
     {
         public long Id { get; set; }

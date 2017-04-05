@@ -10,10 +10,12 @@ using CTP.Models.Maps;
 
 namespace CTP.Services
 {
+    // Inherits from icontentservice so must implement functions from it
     public class ContentService : IContentService
     {
         private IProjectService _projectService = new ProjectService();
 
+        // Get all content items for a given category and optional parent content item 
         public IEnumerable<ContentItem> GetContentItems(long categoryId, long? parentContentItemId = null)
         {
             var output = new List<ContentItem>();
@@ -23,17 +25,20 @@ namespace CTP.Services
                 sqlConn.Open();
                 try
                 {
+                    // Do a left join on content item tables to find matching rows
                     var query = "SELECT * FROM ContentItems "
                               + "LEFT JOIN TextContentItems ON ContentItems.Id = TextContentItems.ContentItemId "
                               + "LEFT JOIN ImageContentItems ON ContentItems.Id = ImageContentItems.ContentItemId "
                               + "LEFT JOIN VideoContentItems ON ContentItems.Id = VideoContentItems.ContentItemId "
                               + "LEFT JOIN FolderContentItems ON ContentItems.Id = FolderContentItems.ContentItemId "
                               + "WHERE CategoryId = " + categoryId
+                              // Search by the parent content item id if it has been included
                               + (parentContentItemId.HasValue ? " AND ParentContentItemId = " + parentContentItemId.Value.ToString() : " AND ParentContentItemId IS NULL");
 
                     var command = new SqlCommand(query, sqlConn);
                     var reader = command.ExecuteReader();
 
+                    // Map the results to a c# model 
                     while (reader.Read())
                     {
                         output.Add(ContentItemMaps.MapDbToEntity(reader));
@@ -46,6 +51,7 @@ namespace CTP.Services
                 }
             }
 
+            // Loop through the results and get the category and parent content items
             foreach (var contentItem in output)
             {
                 contentItem.Category = _projectService.GetCategory(contentItem.CategoryId);
@@ -55,6 +61,7 @@ namespace CTP.Services
             return output;
         }
 
+        // Get a specific content item by its id
         public ContentItem GetContentItem(long id)
         {
             ContentItem output;
@@ -73,8 +80,10 @@ namespace CTP.Services
                     var command = new SqlCommand(query, sqlConn);
                     var reader = command.ExecuteReader();
 
+                    // Return null if no results
                     if (!reader.Read()) { return null; }
 
+                    // Map to a c# model
                     output = ContentItemMaps.MapDbToEntity(reader);
                 }
                 finally
@@ -83,12 +92,14 @@ namespace CTP.Services
                 }
             }
 
+            // Get the category and parent content item from db
             output.Category = _projectService.GetCategory(output.CategoryId);
             if (output.ParentContentItemId.HasValue) { output.ParentContentItem = GetContentItem(output.ParentContentItemId.Value); }
 
             return output;
         }
 
+        // Find a content item by its url name
         public ContentItem GetContentItemByUrlName(long categoryId, string urlName, long? parentContentItemId)
         {
             ContentItem output;
@@ -125,6 +136,7 @@ namespace CTP.Services
             return output;
         }
 
+        // Create a new content item 
         public void InsertContentItem(string title, long categoryId, short contentItemTypeId, long? parentContentItemId, string urlName,
                                       string text = null,
                                       string imageUrl = null,
@@ -135,12 +147,14 @@ namespace CTP.Services
                 sqlConn.Open();
                 try
                 {
+                    // Insert into the base table and get the ID of the newly inserted row
                     var query = "INSERT INTO ContentItems (Title, CategoryId, ContentItemTypeId, ParentContentItemId, UrlName) OUTPUT INSERTED.ID VALUES('" + title.Replace("'", "''") + "', " + categoryId + ", " + contentItemTypeId + ", " + (parentContentItemId.HasValue ? parentContentItemId.Value.ToString() : "NULL") + ", '" + urlName + "');";
                     var command = new SqlCommand(query, sqlConn);
                     var id = command.ExecuteScalar();
 
                     string specificQuery;
                     SqlCommand specificCommand;
+                    // Insert into the correct table based on the type id, and include the newly inserted id as a reference from the base table
                     switch (contentItemTypeId)
                     {
                         case 1:
@@ -174,6 +188,7 @@ namespace CTP.Services
             }
         }
 
+        // Delete a content item by its id
         public void Delete(long contentItemId)
         {
             using (var sqlConn = new SqlConnection(Helpers.Helper.SqlConnectionString))
@@ -186,7 +201,6 @@ namespace CTP.Services
                                 "DELETE FROM ImageContentItems WHERE ContentItemId = " + contentItemId + ";" +
                                 "DELETE FROM VideoContentItems WHERE ContentItemId = " + contentItemId + ";" +
                                 "DELETE FROM FolderContentItems WHERE ContentItemId = " + contentItemId + ";" +
-                                "DELETE FROM ContentItems WHERE ParentContentItemId = " + contentItemId + ";" + 
                                 "DELETE FROM ContentItems WHERE Id = " + contentItemId + ";";
                     var command = new SqlCommand(query, sqlConn);
                     command.ExecuteNonQuery();

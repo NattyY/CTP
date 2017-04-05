@@ -13,6 +13,7 @@ namespace CTP.Services.Abstract
     {
         private static IUserService _userService = new UserService();
 
+        // Get the projects from the db for a user
         public IEnumerable<Project> GetProjects(int userId)
         {
             using (var sqlConn = new SqlConnection(Helpers.Helper.SqlConnectionString))
@@ -25,6 +26,7 @@ namespace CTP.Services.Abstract
                     var reader = command.ExecuteReader();
                     var output = new List<Project>();
 
+                    // Map the results to a c# model
                     while (reader.Read())
                     {
                         output.Add(ProjectMaps.MapDbToEntity(reader));
@@ -39,6 +41,7 @@ namespace CTP.Services.Abstract
             }
         }
 
+        // Create a new project in the db
         public void InsertProject(string title, string description, string imageUrl, int userId, string urlName)
         {
             using (var sqlConn = new SqlConnection(Helpers.Helper.SqlConnectionString))
@@ -57,6 +60,7 @@ namespace CTP.Services.Abstract
             }
         }
 
+        // Get a specific project
         public Project GetProject(int projectId)
         {
             Project output;
@@ -69,8 +73,10 @@ namespace CTP.Services.Abstract
                     var command = new SqlCommand(query, sqlConn);
                     var reader = command.ExecuteReader();
 
+                    // Return null if no results
                     if (!reader.Read()) { return null; }
 
+                    // If there was a result, map it to a c# model
                     output = ProjectMaps.MapDbToEntity(reader);
                 }
                 finally
@@ -79,10 +85,12 @@ namespace CTP.Services.Abstract
                 }
             }
 
+            // Get the user that owns the project
             output.User = _userService.GetUser(output.UserId);
             return output;
         }
 
+        // Get the categories in a project
         public IEnumerable<ProjectCategory> GetCategories(int projectId)
         {
             var output = new List<ProjectCategory>();
@@ -108,6 +116,7 @@ namespace CTP.Services.Abstract
                 }
             }
 
+            // Get the parent project for the category
             foreach (var category in output)
             {
                 category.Project = GetProject(category.ProjectId);
@@ -116,6 +125,7 @@ namespace CTP.Services.Abstract
             return output;
         }
 
+        // Get the project by url name for a user
         public Project GetUsersProjectByUrlName(int userId, string projectUrlName)
         {
             using (var sqlConn = new SqlConnection(Helpers.Helper.SqlConnectionString))
@@ -137,6 +147,7 @@ namespace CTP.Services.Abstract
             }
         }
 
+        // Insert a new category to the db
         public void InsertCategory(string title, string imageUrl, int projectId, string urlName)
         {
             using (var sqlConn = new SqlConnection(Helpers.Helper.SqlConnectionString))
@@ -155,6 +166,7 @@ namespace CTP.Services.Abstract
             }
         }
 
+        // Get a specific category
         public ProjectCategory GetCategory(long categoryId)
         {
             ProjectCategory output;

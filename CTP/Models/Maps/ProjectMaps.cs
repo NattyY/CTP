@@ -13,6 +13,7 @@ namespace CTP.Models.Maps
 {
     public static class ProjectMaps
     {
+        // Get the fields from the db result
         public static Project MapDbToEntity(SqlDataReader reader)
         {
             var id = Convert.ToInt32(reader["Id"]);
@@ -33,6 +34,7 @@ namespace CTP.Models.Maps
             };
         }
 
+        // Map to the card view model from the db entity
         public static ProjectCardViewModel MapToCard(Project project)
         {
             return new ProjectCardViewModel
@@ -46,6 +48,7 @@ namespace CTP.Models.Maps
             };
         }
 
+        // Create the project url
         public static string GetUrl(Project project)
         {
             return "/projects/" + project.UrlName;

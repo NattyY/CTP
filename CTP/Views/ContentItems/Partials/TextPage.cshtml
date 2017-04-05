@@ -1,4 +1,13 @@
 ﻿@model CTP.Models.ViewModels.TextContentItemPageViewModel
 
-<h1>@Model.Title</h1>
-<p>@Model.Text</p>
+<div class="mdl-grid">
+    <div class="mdl-color--white mdl-shadow--4dp mdl-cell mdl-cell--12-col mdl-card">
+        <div class="mdl-card__title">
+            @Html.Partial("Partials/Breadcrumbs_FolderContentItem", Model)
+        </div>
+        <div class="mdl-card__title">
+            <h1>@Model.Title</h1>
+        </div>
+        <div class="mdl-card__supporting-text">@Model.Text</div>
+    </div>
+</div>

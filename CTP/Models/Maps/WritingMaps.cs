@@ -10,6 +10,7 @@ namespace CTP.Models.Maps
 {
     public static class WritingMaps
     {
+        // Get the fields from the db result
         public static Writing MapDbToEntity(SqlDataReader reader)
         {
             var id = Convert.ToInt32(reader["Id"]);
@@ -34,6 +35,7 @@ namespace CTP.Models.Maps
             };
         }
 
+        // Build the url for a public writing page
         public static string GetPublicUrl(Writing writing)
         {
             return "/profile/" + writing.Project.User.Username.ToUrlName() + "/" + writing.Project.UrlName + "/" + writing.UrlName;

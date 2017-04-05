@@ -5,6 +5,7 @@ using System.Web;
 
 namespace CTP.Models.Entities.ContentItems
 {
+    // C# version of db table 'VideoContentItem'
     public class VideoContentItem : ContentItem
     {
         public long ContentItemId { get; set; }

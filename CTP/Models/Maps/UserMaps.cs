@@ -9,6 +9,7 @@ namespace CTP.Models.Maps
 {
     public static class UserMaps
     {
+        // Get the fields from the db result
         public static User MapDbToEntity(SqlDataReader reader)
         {
             var id = Convert.ToInt32(reader["Id"]);

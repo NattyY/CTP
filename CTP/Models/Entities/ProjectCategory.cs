@@ -5,6 +5,7 @@ using System.Web;
 
 namespace CTP.Models.Entities
 {
+    // C# version of db table 'ProjectCategory'
     public class ProjectCategory
     {
         public long Id { get; set; }

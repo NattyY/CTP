@@ -13,6 +13,7 @@ namespace CTP.Services
     {
         private IProjectService _projectService = new ProjectService();
 
+        // Get all of the public writing
         public IEnumerable<Writing> GetPublicWriting()
         {
             var output = new List<Writing>();
@@ -26,6 +27,7 @@ namespace CTP.Services
                     var command = new SqlCommand(query, sqlConn);
                     var reader = command.ExecuteReader();
 
+                    // Map the results to c# models
                     while (reader.Read())
                     {
                         output.Add(WritingMaps.MapDbToEntity(reader));
@@ -37,6 +39,7 @@ namespace CTP.Services
                 }
             }
 
+            // Get the parent project for each writing item (which in turn will get the parent user for each project)
             foreach (var writing in output)
             {
                 writing.Project = _projectService.GetProject(writing.ProjectId);
@@ -45,6 +48,7 @@ namespace CTP.Services
             return output;
         }
 
+        // Get a specific writingt item
         public Writing GetWriting(long writingid)
         {
             Writing output;
@@ -73,6 +77,7 @@ namespace CTP.Services
             return output;
         }
 
+        // Get all writing within a project
         public IEnumerable<Writing> GetWritingByProjectId(int projectId)
         {
             var output = new List<Writing>();
@@ -106,6 +111,7 @@ namespace CTP.Services
             return output;
         }
 
+        // Create a new writing in db
         public void InsertWriting(string title, string content, bool isPublic, int projectId, string urlName)
         {
             using (var sqlConn = new SqlConnection(Helpers.Helper.SqlConnectionString))
@@ -124,6 +130,7 @@ namespace CTP.Services
             }
         }
 
+        // Edit a writing
         public void UpdateWriting(long writingId, string title, string content, bool isPublic, DateTime lastModified)
         {
             using (var sqlConn = new SqlConnection(Helpers.Helper.SqlConnectionString))

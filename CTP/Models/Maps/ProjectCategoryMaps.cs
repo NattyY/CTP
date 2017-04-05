@@ -12,6 +12,7 @@ namespace CTP.Models.Maps
     {
         public static ProjectCategory MapDbToEntity(SqlDataReader reader)
         {
+            // Get fields from the db
             var id = Convert.ToInt64(reader["Id"]);
             var title = reader["Title"].ToString();
             var imageUrl = reader["ImageUrl"].ToString();
@@ -30,6 +31,7 @@ namespace CTP.Models.Maps
 
         public static ProjectCategoryCardViewModel MapToCard(ProjectCategory category)
         {
+            // Create the card view model
             return new ProjectCategoryCardViewModel
             {
                 Id = category.Id,
@@ -39,6 +41,7 @@ namespace CTP.Models.Maps
             };
         }
 
+        // Get the url for the project category by getting the project url and adding the url name afterwards
         public static string GetUrl(ProjectCategory category)
         {
             return ProjectMaps.GetUrl(category.Project) + "/" + category.UrlName;

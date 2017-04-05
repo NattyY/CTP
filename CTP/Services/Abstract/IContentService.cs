@@ -6,6 +6,7 @@ using System.Web;
 
 namespace CTP.Services.Abstract
 {
+    // Interface allows for the caller to know what functions exist on this service 
     public interface IContentService
     {
         IEnumerable<ContentItem> GetContentItems(long categoryId, long? parentContentItemId = null);

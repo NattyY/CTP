@@ -9,6 +9,7 @@ namespace CTP.Models.ViewModels
 {
     public class CreateContentItemFormViewModel
     {
+        // Ensure that the title field must be filled out
         [Required(ErrorMessage = "Please input a Title for the content item")]
         public string Title { get; set; }
         public long CategoryId { get; set; }

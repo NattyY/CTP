@@ -17,6 +17,7 @@ namespace CTP.Models.Maps
 
         public static ContentItem MapDbToEntity(SqlDataReader reader)
         {
+            // Get fields from the sql results
             var id = Convert.ToInt64(reader["Id"]);
             var title = reader["Title"].ToString();
             var categoryId = Convert.ToInt64(reader["CategoryId"]);
@@ -26,6 +27,7 @@ namespace CTP.Models.Maps
             if (!string.IsNullOrWhiteSpace(parentContentItemIdStr)) { parentContentItemId = Convert.ToInt64(parentContentItemIdStr); }
             var urlName = reader["UrlName"].ToString();
 
+            // Depending on the content type id, return the correct type of content item
             switch (contentItemTypeId)
             {
                 case 1:
@@ -92,6 +94,7 @@ namespace CTP.Models.Maps
 
         public static ContentItemCardViewModel MapToCard(ContentItem contentItem)
         {
+            // Depending on the content type id, return the correct type of content item
             switch (contentItem.ContentItemTypeId)
             {
                 case 1:
@@ -102,7 +105,7 @@ namespace CTP.Models.Maps
                         Title = contentItem.Title,
                         UrlName = contentItem.UrlName,
                         Url = GetUrl(contentItem),
-                        Text = (contentItem as TextContentItem).Text
+                        Text = (contentItem as TextContentItem).Text 
                     };
                 case 2:
                     // Image content item
@@ -140,6 +143,7 @@ namespace CTP.Models.Maps
 
         public static ContentItemPageViewModel MapToPageModel(ContentItem contentItem, bool recursiveFolders)
         {
+            // Depending on the content type id, return the correct type of content item
             switch (contentItem.ContentItemTypeId)
             {
                 case 1:
@@ -208,15 +212,17 @@ namespace CTP.Models.Maps
             }
         }
 
-
+        // Create the url of the content item 
         public static string GetUrl(ContentItem contentItem)
         {
+            // If there is no parent content item, then this is the first content item, so get the category url to put before
             if (contentItem.ParentContentItem == null)
             {
                 return ProjectCategoryMaps.GetUrl(contentItem.Category) + "/" + contentItem.UrlName;
             }
             else
             {
+                // If there is a parent content item, then get that first and then add the urlname to the end
                 return GetUrl(contentItem.ParentContentItem) + "/" + contentItem.UrlName;
             }
         }

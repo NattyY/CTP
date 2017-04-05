@@ -1,30 +1,47 @@
-﻿.mdl-grid,
-.project-drawer-dialog {
+﻿/* Set the max width of the grid */
+.mdl-grid {
     width: 95%;
     max-width: 1200px;
 }
 
+/* Make the material design drawer a bit wider */
 .mdl-layout__drawer {
     transform: translateX(-275px);
     width: 275px;
 }
 
+/* A separator for use in the drawer */
 .drawer-separator {
     height: 1px;
     background-color: #dcdcdc;
     margin: 8px 0;
 }
 
+/* For adding standard background to cards */
 .nat-background {
     background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/shattered.png');
 }
 
-.card--content-image > .mdl-card__actions {
+/* Help fix placement of images in the content cards */
+.card--content-image .mdl-card__title {
+    background-size: cover;
+}
+
+/* Taken from mdl: https://getmdl.io/components/index.html#cards-section */
+.card--content-image .mdl-card__actions {
     height: 52px;
     padding: 16px;
     background: rgba(0, 0, 0, 0.4);
 }
 
+/* Fix the way the images look in full page mode - as wide as possible but centered if not full width */
+.page--content-image .mdl-card__supporting-text img {
+    max-width: 100%;
+    display: block;
+    margin: auto;
+}
+
+/* Remove link defaults from image title link */
 .content-image__name a {
     text-decoration: none;
     color: #fff;
@@ -36,31 +53,26 @@
         text-decoration: underline;
     }
 
+/* Remove link defaults from content item menu links */
 .mdl-menu__item a {
     display: block;
     text-decoration: none;
     color: inherit;
 }
 
-.ribbon {
-    width: 100%;
-    height: 40vh;
-    background-color: #3F51B5;
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-}
-
+/* For writing listings to put space between them */
 section.section--center:not(:last-of-type) {
     margin-bottom: 48px;
 }
 
+/* Make writing look more like: https://getmdl.io/templates/article/index.html */
 .writing-content {
     border-radius: 2px;
     padding: 28px 33px;
     margin-bottom: 80px;
 }
 
+/* Make the title for the writing edit pages look bigger */
 .title-textfield {
     width: 100%;
 }
@@ -69,6 +81,7 @@ section.section--center:not(:last-of-type) {
         font-size: 56px;
     }
 
+/* A thinner form that isn't full width */
 .thinner-form {
     width: 83%;
 }
@@ -77,6 +90,7 @@ section.section--center:not(:last-of-type) {
     visibility: visible;
 }
 
+/* Project drawer fade in and out functionality */
 .pd-show {
     transition: opacity ease-in-out 0.35s;
     opacity: 1;
@@ -86,6 +100,7 @@ section.section--center:not(:last-of-type) {
         opacity: 0;
     }
 
+/* Project drawer content items */
 .project-drawer .mdl-list__item {
     display: block;
 }
@@ -118,12 +133,14 @@ section.section--center:not(:last-of-type) {
     top: 5px;
 }
 
+/* Make the writing edit title smaller on mobile and below */
 @media only screen and (max-width: 600px) {
     .title-textfield .mdl-textfield__input {
         font-size: 32px;
     }
 }
 
+/* Force the toolbar of the RTE to drop buttons to the next line on tablet and below */
 @media only screen and (max-width: 1024px) {
     trix-toolbar .button_row {
         display: block !important;

@@ -8,33 +8,22 @@
     </div>
 </div>
 
-@if (Model.Writings.Count > 0)
+@foreach (var writing in Model.Writings)
 {
-    foreach (var writing in Model.Writings)
-    {
-        <section class="section--center mdl-grid">
-            <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-shadow--8dp">
-                <div class="mdl-card__supporting-text">
-                    <h2>@writing.Title</h2>
-                    <div>@Html.Raw(writing.Content)</div>
-                    <small><strong>created: </strong>@writing.DateCreated</small>
-                    <small><strong>modified: </strong>@writing.LastModified</small>
-                </div>
-                <div class="mdl-card__actions">
-                    <a href="/writing/@writing.Project.UrlName/@writing.UrlName" class="mdl-button mdl-button--primary">View</a>
-                    <a href="/writing/@writing.Project.UrlName/@writing.UrlName/edit" class="mdl-button mdl-button--accent">Edit</a>
-                </div>
+    <section class="section--center mdl-grid">
+        <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-shadow--8dp">
+            <div class="mdl-card__supporting-text">
+                <h2>@writing.Title</h2>
+                <div>@Html.Raw(writing.Content)</div>
+                <small><strong>created: </strong>@writing.DateCreated</small>
+                <small><strong>modified: </strong>@writing.LastModified</small>
             </div>
-        </section>
-    }
-}
-else
-{
-    <p>
-        You haven't got any writing yet...
-        <br />
-        Why not start something now?
-    </p>
+            <div class="mdl-card__actions">
+                <a href="/writing/@writing.Project.UrlName/@writing.UrlName" class="mdl-button mdl-button--primary">View</a>
+                <a href="/writing/@writing.Project.UrlName/@writing.UrlName/edit" class="mdl-button mdl-button--accent">Edit</a>
+            </div>
+        </div>
+    </section>
 }
 
 <div class="mdl-grid">

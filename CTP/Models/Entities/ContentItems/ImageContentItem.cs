@@ -5,6 +5,7 @@ using System.Web;
 
 namespace CTP.Models.Entities.ContentItems
 {
+    // C# version of db table 'ImageContentItem'
     public class ImageContentItem : ContentItem
     {
         public long ContentItemId { get; set; }

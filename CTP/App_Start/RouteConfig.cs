@@ -12,7 +12,8 @@ namespace CTP
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            
+            // Map urls to the controller actions
             #region Projects
             routes.MapRoute(
                 name: "Create Project",
@@ -50,6 +51,7 @@ namespace CTP
                 defaults: new { controller = "Projects", action = "Category" }
             );
 
+            // * allows for infinite url parameters to be passed into Controller Action: http://stackoverflow.com/a/7515690
             routes.MapRoute(
                 name: "Content Item",
                 url: "projects/{projectName}/{categoryName}/{*contentNames}",

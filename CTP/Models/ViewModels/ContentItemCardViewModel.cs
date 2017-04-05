@@ -14,6 +14,7 @@ namespace CTP.Models.ViewModels
         public abstract string View { get; }
     }
 
+    // The following all inherits from the ContentItemCardViewModel, to include the necessary fields, but also to add new ones
     public class TextContentItemCardViewModel : ContentItemCardViewModel
     {
         public string Text { get; set; }

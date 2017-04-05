@@ -14,10 +14,12 @@ namespace CTP.Controllers
 {
     public class ProjectsController : Controller
     {
+        // Services used for talking to db
         private IUserService _userService = new UserService();
         private IProjectService _projectService = new ProjectService();
         private IContentService _contentService = new ContentService();
 
+        // On page load, check if a user is logged in and get the user url for the profile link
         public ProjectsController()
         {
             if (_userService.IsLoggedIn())
@@ -27,23 +29,29 @@ namespace CTP.Controllers
             }
         }
 
-        #region GET
+        // Project Hub
         public ActionResult Index()
         {
+            // Redirect to the homepage if not logged in
             if (!_userService.IsLoggedIn())
             {
                 return RedirectToAction("Index", "Home");
             }
 
+            // Get the projects for the logged in user
             var projects = _projectService.GetProjects(_userService.GetLoggedInUserId());
+
+            // Create the model to pass in to the view
             var model = new ProjectHubViewModel
             {
+                // Map the project to a model that contains the fields for a 'card' version of the project
                 Projects = projects.Select(ProjectMaps.MapToCard).ToList()
             };
 
             return View(model);
         }
 
+        // Categories listing
         public ActionResult Categories(string projectName)
         {
             if (!_userService.IsLoggedIn())
@@ -51,6 +59,7 @@ namespace CTP.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            // Get project by logged in user and projectName (from the URL), then categories in the project
             var project = _projectService.GetUsersProjectByUrlName(_userService.GetLoggedInUserId(), projectName);
             var categories = _projectService.GetCategories(project.Id);
 
@@ -63,6 +72,7 @@ namespace CTP.Controllers
             return View(model);
         }
 
+        // Display the contents of a category
         public ActionResult Category(string projectName, string categoryName)
         {
             if (!_userService.IsLoggedIn())
@@ -70,6 +80,7 @@ namespace CTP.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            // Get the project by user and URL part, then category by project ID and URL part, then get the content items in that category
             var project = _projectService.GetUsersProjectByUrlName(_userService.GetLoggedInUserId(), projectName);
             var categories = _projectService.GetCategories(project.Id);
             var category = categories.First(c => c.UrlName == categoryName);
@@ -84,6 +95,7 @@ namespace CTP.Controllers
             return View(model);
         }
 
+        // Display the contents of a content item
         public ActionResult ContentItem(string projectName, string categoryName, string contentNames)
         {
             if (string.IsNullOrWhiteSpace(contentNames)) { contentNames = string.Empty; }
@@ -99,6 +111,8 @@ namespace CTP.Controllers
 
             long? parentContentItemId = null;
             var ancestors = new List<ContentItem>();
+
+            // Loop through the list of content names from the URL and find them all
             foreach (var name in contentNames.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 var item = _contentService.GetContentItemByUrlName(category.Id, name, parentContentItemId);
@@ -106,15 +120,20 @@ namespace CTP.Controllers
                 parentContentItemId = item.Id;
             }
 
+            // The last content item is the one we are currently 'in'
             var currentContentItem = ancestors.Last();
             ancestors.Remove(currentContentItem);
 
+            // Map the current content item to a page model so it can be displayed in the page
             var model = ContentItemMaps.MapToPageModel(currentContentItem, false);
+
+            // Map the others to card models so we can use them in the breadcrumbs
             model.Ancestors = ancestors.Select(ContentItemMaps.MapToCard).ToList();
 
             return View(model);
         }
 
+        // Delete a content item by id
         public ActionResult DeleteContentItem(long id)
         {
             var contentItem = _contentService.GetContentItem(id);
@@ -136,10 +155,7 @@ namespace CTP.Controllers
 
             return Redirect(url);
         }
-        #endregion GET
 
-        #region Forms
-        #region Create Project
         public ActionResult CreateProjectForm()
         {
             // Restore previous model from invalid form submission
@@ -178,8 +194,13 @@ namespace CTP.Controllers
             }
             else
             {
+                // Insert a new project with the specified values
                 _projectService.InsertProject(model.Title, model.Description, model.ImageUrl, userId, urlName);
+                
+                // Find the newly created project
                 var project = _projectService.GetUsersProjectByUrlName(userId, urlName);
+                
+                // Create some default categories in the new project
                 _projectService.InsertCategory("World", "", project.Id, "world");
                 _projectService.InsertCategory("Characters", "", project.Id, "characters");
                 _projectService.InsertCategory("Timeline", "", project.Id, "timeline");
@@ -188,9 +209,7 @@ namespace CTP.Controllers
 
             return RedirectToAction("Index");
         }
-        #endregion Create Project
 
-        #region Create Category
         public ActionResult CreateCategoryForm(int projectId)
         {
             // Restore previous model from invalid form submission
@@ -215,6 +234,7 @@ namespace CTP.Controllers
         public ActionResult CreateCategory(CreateCategoryFormViewModel model)
         {
             var urlName = model.Title.ToUrlName();
+            // Find the project to insert the category into
             var project = _projectService.GetProject(model.ProjectId);
 
             // Check if a category already exists in this project with that name
@@ -235,15 +255,14 @@ namespace CTP.Controllers
             }
             else
             {
+                // Create the category
                 _projectService.InsertCategory(model.Title, model.ImageUrl, model.ProjectId, urlName);
             }
 
             var url = ProjectMaps.GetUrl(project);
             return Redirect(url);
         }
-        #endregion Create Category
 
-        #region Create Content Item
         public ActionResult CreateContentItemForm(long categoryId, long? parentContentItemId = null)
         {
             // Restore previous model from invalid form submission
@@ -282,6 +301,18 @@ namespace CTP.Controllers
                 {
                     ModelState.AddModelError("Title", "The name '" + urlName + "' already exists - please try another Content Item Title");
                 }
+
+                // Check if the 'text' type was selected and the 'text' field wasn't set
+                if (model.ContentItemTypeId == 1 && string.IsNullOrWhiteSpace(model.Text))
+                {
+                    ModelState.AddModelError("Text", "The Text field is required");
+                }
+
+                // Check if the 'image' type was selected and the 'imageurl' field wasn't set
+                if (model.ContentItemTypeId == 2 && string.IsNullOrWhiteSpace(model.ImageUrl))
+                {
+                    ModelState.AddModelError("ImageUrl", "The Image URL field is required");
+                }
             }
 
             if (!ModelState.IsValid)
@@ -292,13 +323,13 @@ namespace CTP.Controllers
             }
             else
             {
+                // Create the content item
                 _contentService.InsertContentItem(model.Title, model.CategoryId, model.ContentItemTypeId, model.ParentContentItemId, urlName, model.Text, model.ImageUrl, model.VideoUrl);
             }
 
+            // Either redirect back to the parent content item (if one exists), or the parent category
             var url = parentContentItem != null ? ContentItemMaps.GetUrl(parentContentItem) : ProjectCategoryMaps.GetUrl(category);
             return Redirect(url);
         }
-        #endregion Create Content Item
-        #endregion Forms
     }
 }

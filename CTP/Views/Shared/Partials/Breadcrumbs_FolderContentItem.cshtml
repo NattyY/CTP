@@ -1,5 +1,6 @@
 ﻿@using CTP.Models.Maps
-@model CTP.Models.ViewModels.FolderContentItemPageViewModel
+@model CTP.Models.ViewModels.ContentItemPageViewModel
+@* Breadcrumbs used on a content items page *@
 
 <div class="mdl-color-text--grey-500">
     <a href="/projects" title="Project Hub">Project Hub</a> &gt; 
@@ -8,6 +9,7 @@
 
     @foreach (var ci in Model.Ancestors)
     {
+        // Text tag allows for MVC to not view the &gt; as code: https://weblogs.asp.net/scottgu/asp-net-mvc-3-razor-s-and-lt-text-gt-syntax
         <a href="@ci.Url" title="@ci.Title">@ci.Title</a><text> &gt; </text>
     }
 

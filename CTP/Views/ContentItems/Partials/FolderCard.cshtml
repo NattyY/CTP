@@ -12,8 +12,9 @@
             <i class="material-icons">more_vert</i>
         </button>
         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-@(Model.Id)">
-            <li class="mdl-menu__item"><a href="@Model.Url">Edit</a></li>
-            <li class="mdl-menu__item"><a href="/projects/deletecontentitem?id=@Model.Id">Delete</a></li>
+            <li class="mdl-menu__item"><a href="@Model.Url">View</a></li>
+            @* Need to delete all child content items before this can be deleted *@
+            @*<li class="mdl-menu__item"><a href="/projects/deletecontentitem?id=@Model.Id">Delete</a></li>*@
         </ul>
     </div>
 </div>
