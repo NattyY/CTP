@@ -1,4 +1,4 @@
 ﻿@model CTP.Models.ViewModels.ContentItemPageViewModel
 @{ Layout = "/Views/Shared/_LoggedInLayout.cshtml"; }
-
+@* Just include the correct view depending on the content item type *@
 @Html.Partial(Model.View, Model)
